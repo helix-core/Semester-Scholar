@@ -49,7 +49,7 @@ google_api_key=os.getenv("GOOGLE_API_KEY2")
 COH_API_KEY=os.getenv('COHERE_API_KEY')
 genai.configure(api_key=google_api_key)
 model = genai.GenerativeModel("gemini-1.5-pro")
-llm=VertexAI(model_name='gemini-1.5-flash')
+llm=VertexAI(model_name='gemini-1.5-pro')
 
 class BinaryDataLoader(BaseLoader):
     def __init__(self, binary_data: bytes, file_name: str):
@@ -147,7 +147,7 @@ def get_conversational_chain():
     Question: \n{question}\n
     Answer:
     """
-    llm=VertexAI(model_name='gemini-1.5-flash')
+    llm=VertexAI(model_name='gemini-1.5-pro')
     prompt = PromptTemplate(template=prompt_template, input_variables=["context", "question"])
     chain = LLMChain(llm=llm, prompt=prompt)
     return chain

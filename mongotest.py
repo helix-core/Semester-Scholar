@@ -3,8 +3,9 @@ from pymongo import MongoClient
 import urllib.parse
 from bson.binary import Binary
 
-username = 'ahmedmustafan'
-password = 'mydbboss321@'
+username = os.getenv('DB_USERNAME')
+password = os.getenv('DB_PASSWORD')
+db_name=os.getenv('DB_NAME')
 encoded_username = urllib.parse.quote_plus(username)
 encoded_password = urllib.parse.quote_plus(password)
 

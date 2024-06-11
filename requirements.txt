@@ -1,4 +1,4 @@
-﻿cohere==5.5.6
+﻿cohere
 faiss-cpu==1.7.4
 google-ai-generativelanguage==0.6.4
 google-api-core==2.19.0
@@ -46,5 +46,5 @@ requests-oauthlib==2.0.0
 sentence-transformers==3.0.1
 streamlit==1.35.0
 tiktoken==0.4.0
-tokenizers==0.15.2
-transformers==4.41.2
+tokenizers
+transformers

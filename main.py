@@ -17,6 +17,9 @@ from langchain.vectorstores import FAISS
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_cohere import CohereEmbeddings
 from io import BytesIO
+import asyncio
+import nest_asyncio
+
 
 load_dotenv()
 
@@ -50,6 +53,11 @@ COH_API_KEY=os.getenv('COHERE_API_KEY')
 genai.configure(api_key=google_api_key)
 # model = genai.GenerativeModel("gemini-1.5-pro")
 # llm=ChatGoogleGenerativeAI(model='gemini-1.5-pro',google_api_key=google_api_key)
+nest_asyncio.apply()
+
+# Set up event loop
+loop = asyncio.new_event_loop()
+asyncio.set_event_loop(loop)
 
 llm = ChatGoogleGenerativeAI(
     model='gemini-1.5-pro',

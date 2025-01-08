@@ -48,3 +48,4 @@ streamlit==1.35.0
 tiktoken==0.4.0
 tokenizers
 transformers
+nest-asyncio

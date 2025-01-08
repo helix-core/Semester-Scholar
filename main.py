@@ -48,8 +48,14 @@ for collection_name in collection_names:
 google_api_key=os.getenv("GOOGLE_API_KEY2")
 COH_API_KEY=os.getenv('COHERE_API_KEY')
 genai.configure(api_key=google_api_key)
-model = genai.GenerativeModel("gemini-1.5-pro")
-llm=ChatGoogleGenerativeAI(model='gemini-1.5-pro',google_api_key=google_api_key)
+# model = genai.GenerativeModel("gemini-1.5-pro")
+# llm=ChatGoogleGenerativeAI(model='gemini-1.5-pro',google_api_key=google_api_key)
+
+llm = ChatGoogleGenerativeAI(
+    model='gemini-1.5-pro',
+    google_api_key=google_api_key,
+    convert_system_message_to_human=True
+)
 
 class BinaryDataLoader(BaseLoader):
     def __init__(self, binary_data: bytes, file_name: str):

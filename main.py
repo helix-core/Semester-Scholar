@@ -168,16 +168,25 @@ def get_conversational_chain():
 
 
 def user_input(user_question):
-    embeddings = CohereEmbeddings(model="embed-english-light-v3.0",cohere_api_key=COH_API_KEY)
+    embeddings = CohereEmbeddings(model="embed-english-light-v3.0", cohere_api_key=COH_API_KEY)
     new_db = FAISS.load_local("faiss_index", embeddings, allow_dangerous_deserialization=True)
     docs = new_db.similarity_search(user_question)
     context = "\n".join([doc.page_content for doc in docs])
+    
+    # Combine chat history into context
+    history_context = "\n".join([f"User: {entry['user']}\nAI: {entry['bot']}" for entry in st.session_state.chat_history])
+    full_context = f"{history_context}\n{context}"
+    
     chain = get_conversational_chain()
-    response = chain.invoke({"context": context, "question": user_question}, return_only_outputs=True)
+    response = chain.invoke({"context": full_context, "question": user_question}, return_only_outputs=True)
     print("\nResponse:", response)
+    
+    # Add the current interaction to the chat history
+    st.session_state.chat_history.append({"user": user_question, "bot": response.get("text", "No output text found")})
     
     # Adjust the key according to the actual response structure
     return response.get("text", "No output text found")
+
 
 
 def query_and_ask(query, user_question):
@@ -193,6 +202,8 @@ def query_and_ask(query, user_question):
 
 def main():
     st.set_page_config(page_title="Semester Scholar", page_icon="📚", layout="wide")
+    if "chat_history" not in st.session_state:
+        st.session_state.chat_history = []  # Initialize the chat history
 
     st.title("📚 Semester Scholar")
     st.markdown("### Retrieve and query your semester materials effortlessly!")
@@ -220,6 +231,13 @@ def main():
 
     4. **Get Answer**: Receive the detailed answer to your question.
     """)
+    st.sidebar.title("Chat History")
+    for entry in st.session_state.chat_history:
+        st.sidebar.markdown(f"**User:** {entry['user']}\n\n**AI:** {entry['bot']}\n---")
+    if st.sidebar.button("Clear Chat History"):
+        st.session_state.chat_history = []
+
+
 
 if __name__ == "__main__":
     main()
